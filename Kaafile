@@ -1,0 +1,9 @@
+[project]
+type = "MODULE"
+version = "1.0.0"
+name = "prueba_lib_pyspark"
+
+[[source]]
+url = "https://${ARTIFACTORY_VDC_BOT_BASIC_AUTH}@artifactory.globaldevtools.bbva.com/artifactory/api/pypi/gl-datio-runtime-pypi-virtual/simple/"
+verify_ssl = true
+name = "python-global"

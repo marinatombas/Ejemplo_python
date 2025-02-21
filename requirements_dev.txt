@@ -1,0 +1,5 @@
+-r requirements.txt
+pykaa~=0.5.3
+pytest~=6.2.1
+coverage==4.5.4
+requirements-parser
