@@ -5,7 +5,7 @@ import pandas as pd
 from dataclasses import dataclass
 
 base_path = "..\\files\\*.csv"
-
+save_files="..\\saved_files"
 
 @dataclass
 class Table:
@@ -15,12 +15,19 @@ class Table:
 
 
 class DataReader:
-
     def __init__(self, base_path: str):
+        """
+        Initialize the DataReader class.
+        :param base_path: The base path where files are located.
+        """
         self.base_path: str = base_path
         self.table_dict: Dict[str, Table] = {}
 
     def read_all_files(self) -> None:
+        """
+        Reads all files from the base path and stores them as Table objects in a dictionary.
+        Each Table object will contain the filename, the file path, and the DataFrame.
+        """
         base_path_glob = glob.glob(self.base_path)
 
         for file in base_path_glob:

@@ -1,4 +1,4 @@
-import config
+from config import DataReader, base_path
 import pandas as pd
 import numpy as np
 import pandas_utils
@@ -21,14 +21,17 @@ def calculate_score(row: pd.Series) -> pd.Series:
     :param row: row that we want to calculate the score from
     :return: score of the row
     """
-    if pd.isna(row['imdb_score']) and pd.isna(row['tmdb_score']):
+    imdb_score = row['imdb_score']
+    tmdb_score = row['tmdb_score']
+
+    if pd.isna(imdb_score) and pd.isna(tmdb_score):
         return np.nan
-    elif pd.isna(row['imdb_score']):
-        return row['tmdb_score']
-    elif pd.isna(row['tmdb_score']):
-        return row['imdb_score']
+    elif pd.isna(imdb_score):
+        return  tmdb_score
+    elif pd.isna( tmdb_score):
+        return imdb_score
     else:
-        return (row['imdb_score'] + row['tmdb_score']) / 2
+        return (imdb_score +  tmdb_score) / 2
 
 
 def rank(df_titles_cleaned: pd.DataFrame) -> pd.DataFrame:
@@ -49,9 +52,9 @@ def select_directors(dataframes: List[pd.DataFrame]) -> pd.DataFrame:
     :param dataframes:list of all the dataframes
     :return: a df where all the rows have the role Director
     """
-    df = read_prepare_save.filter_dfs(dataframes, 'person_id')
-    df = read_prepare_save.concat_df(df)
-    directors_df = read_prepare_save.select_values_from_column(df, 'role', 'DIRECTOR')
+    df = pandas_utils.filter_dfs(dataframes, 'person_id')
+    df = pandas_utils.concat_df(df)
+    directors_df = pandas_utils.select_values_from_column(df, 'role', 'DIRECTOR')
     return directors_df
 
 
@@ -62,7 +65,12 @@ def join(df_ranked: pd.DataFrame) -> pd.DataFrame:
     :param df_ranked: Df of titles already ranked
     :return: original df_ranked joined with the column name as director
     """
-    df_name = select_directors(config.dfs).drop_duplicates()[['id', 'name']]
+    dr = DataReader(base_path)
+    dr.read_all_files()
+    credits_df = dr.table_dict["credits.csv"]
+    credits_df2 = dr.table_dict["credits2.csv"]
+    credits_dfs = [credits_df.df, credits_df2.df]
+    df_name = select_directors(credits_dfs).drop_duplicates()[['id', 'name']]
     df_movies_directors = df_ranked.merge(df_name, on='id', how='left')
     df_movies_directors = df_movies_directors.rename(columns={'name': 'director'})
     return df_movies_directors

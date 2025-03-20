@@ -17,8 +17,8 @@ def most_popular_actor_director():
     """
     dr = DataReader(base_path)
     dr.read_all_files()
-    credits_df = dr.table_dict["credits"]
-    credits_df2 = dr.table_dict["credits2"]
+    credits_df = dr.table_dict["credits.csv"]
+    credits_df2 = dr.table_dict["credits2.csv"]
     credits_dfs = [credits_df.df, credits_df2.df]
     # CALCULATE ACTOR AND DIRECTOR IN MOST FILMS
     # concat dfs
@@ -37,6 +37,10 @@ def most_popular_actor_director():
 
 def award_best_film():
     # concat df
+    dr = DataReader(base_path)
+    dr.read_all_files()
+    titles_1=dr.table_dict["titles.csv"]
+    titles_dfs=[titles_1.df]
     concat_films = pandas_utils.concat_df(titles_dfs)
 
     # clean df
