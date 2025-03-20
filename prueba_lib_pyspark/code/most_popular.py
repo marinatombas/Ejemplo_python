@@ -1,3 +1,5 @@
+import read_prepare_save
+
 
 def clean_credits(df_credits):
     """
@@ -20,9 +22,20 @@ def id_count(df_credits_cleaned):
     :return: A df with the columns person_id, count and name
     """
     count_id = df_credits_cleaned['person_id'].value_counts().reset_index()
-    count_final = count_id.merge(df_credits_cleaned[['person_id', 'name']].drop_duplicates(), on='person_id', how='left')
+    count_final = count_id.merge(df_credits_cleaned[['person_id', 'name']]
+                                 .drop_duplicates(), on='person_id', how='left')
     return count_final
 
 
-
-
+def process_and_save(df_roles, role):
+    """
+    Processes a dataframe to get the most common roles (actors or directors),
+    prints the top 5, and saves it to a CSV file.
+    :param df_roles:Df we want to analyze the popularity, actors_df/directors_df
+    :param role: actor/director
+    :return:prints the top 5 and saves the resulting complete dataframe
+    """
+    filename = f'{role}_df'
+    popular_df = id_count(df_roles)
+    print(f'These are the 5 most popular {role}s:\n{popular_df.head(5)}')
+    read_prepare_save.save_df_csv(popular_df, filename)

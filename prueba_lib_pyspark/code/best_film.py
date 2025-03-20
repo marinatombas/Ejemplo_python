@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import read_prepare_save
 
+
 def clean_df(df_titles):
     """
     Function that cleans df, drops duplicates
@@ -11,6 +12,7 @@ def clean_df(df_titles):
     """
     df_cleaned = df_titles.drop_duplicates()
     return df_cleaned
+
 
 def calculate_score(row):
     """
@@ -21,11 +23,12 @@ def calculate_score(row):
     if pd.isna(row['imdb_score']) and pd.isna(row['tmdb_score']):
         return np.nan
     elif pd.isna(row['imdb_score']):
-            return row['tmdb_score']
+        return row['tmdb_score']
     elif pd.isna(row['tmdb_score']):
         return row['imdb_score']
     else:
-        return  (row['imdb_score'] + row['tmdb_score']) / 2
+        return (row['imdb_score'] + row['tmdb_score']) / 2
+
 
 def rank(df_titles_cleaned):
     """
@@ -35,8 +38,9 @@ def rank(df_titles_cleaned):
     """
     df_titles_cleaned = df_titles_cleaned.copy()
     df_titles_cleaned.loc[:, 'score'] = df_titles_cleaned.apply(calculate_score, axis=1)
-    df_ranked=df_titles_cleaned[['id', 'title', 'score']]
+    df_ranked = df_titles_cleaned[['id', 'title', 'score']]
     return df_ranked
+
 
 def select_directors(dataframes):
     """
@@ -44,10 +48,11 @@ def select_directors(dataframes):
     :param dataframes:list of all the dataframes
     :return: a df where all the rows have the role Director
     """
-    df= read_prepare_save.filter_dfs(dataframes, 'person_id')
-    df=read_prepare_save.concat_df(df)
+    df = read_prepare_save.filter_dfs(dataframes, 'person_id')
+    df = read_prepare_save.concat_df(df)
     directors_df = read_prepare_save.select_values_from_column(df, 'role', 'DIRECTOR')
     return directors_df
+
 
 def join(df_ranked):
     """
@@ -56,9 +61,7 @@ def join(df_ranked):
     :param df_ranked: Df of titles already ranked
     :return: original df_ranked joined with the column name as director
     """
-    df_name= select_directors(config.dfs).drop_duplicates()[['id', 'name']]
-    df_movies_directors=df_ranked.merge(df_name, on='id', how='left')
+    df_name = select_directors(config.dfs).drop_duplicates()[['id', 'name']]
+    df_movies_directors = df_ranked.merge(df_name, on='id', how='left')
     df_movies_directors = df_movies_directors.rename(columns={'name': 'director'})
     return df_movies_directors
-
-

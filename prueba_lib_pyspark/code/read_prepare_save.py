@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import config
 
+
 def concat_df(df_list):
     """
     Concat the df
@@ -14,7 +15,8 @@ def concat_df(df_list):
         df_final = pd.concat(df_list, ignore_index=True)
         return df_final
 
-def filter_dfs(df_list,*args):
+
+def filter_dfs(df_list, *args):
     """
     selects df that have determined column names
     :param df_list: List of dfs
@@ -47,6 +49,7 @@ def select_values_from_column(df, column_name, target_value):
         print(f"An error occurred: {e}")
         return pd.DataFrame()
 
+
 def save_df_csv(df_to_save, df_name, route=config.save_files, separator=","):
     """
     saves the desired df in a csv
@@ -58,8 +61,7 @@ def save_df_csv(df_to_save, df_name, route=config.save_files, separator=","):
     """
     full_route = os.path.join(route, f"{df_name}.csv")
     try:
-     df_to_save.to_csv(full_route, sep=separator, index=False)
-     print(f"Files saved successfully in '{full_route}'")
+        df_to_save.to_csv(full_route, sep=separator, index=False)
+        print(f"Files saved successfully in '{full_route}'")
     except Exception as e:
-     print(f"Error while saving the file in '{full_route}': {e}")
-
+        print(f"Error while saving the file in '{full_route}': {e}")
