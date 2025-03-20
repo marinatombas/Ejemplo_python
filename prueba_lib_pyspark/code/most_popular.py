@@ -1,7 +1,9 @@
-import read_prepare_save
+import pandas as pd
+
+import pandas_utils
 
 
-def clean_credits(df_credits):
+def clean_credits(df_credits: pd.DataFrame) -> pd.DataFrame:
     """
     Function that cleans a df, drops duplicates and NaN (except column character) as
     directors have as character value NaN, and we want to keep them
@@ -14,7 +16,7 @@ def clean_credits(df_credits):
     return df_cleaned
 
 
-def id_count(df_credits_cleaned):
+def id_count(df_credits_cleaned: pd.DataFrame) -> pd.DataFrame:
     """
     Given a df counts how many times an id appears
     :param df_credits_cleaned: the df which contain concatenated df with the
@@ -27,13 +29,12 @@ def id_count(df_credits_cleaned):
     return count_final
 
 
-def process_and_save(df_roles, role):
+def process_and_save(df_roles: pd.DataFrame, role: str) -> None:
     """
     Processes a dataframe to get the most common roles (actors or directors),
     prints the top 5, and saves it to a CSV file.
     :param df_roles:Df we want to analyze the popularity, actors_df/directors_df
     :param role: actor/director
-    :return:prints the top 5 and saves the resulting complete dataframe
     """
     filename = f'{role}_df'
     popular_df = id_count(df_roles)

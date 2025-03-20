@@ -1,9 +1,11 @@
+from typing import List, Any
+
 import pandas as pd
 import os
 import config
 
 
-def concat_df(df_list):
+def concat_df(df_list: List[pd.DataFrame]) -> pd.DataFrame:
     """
     Concat the df
     :param df_list: Enter the desired list of df
@@ -16,7 +18,7 @@ def concat_df(df_list):
         return df_final
 
 
-def filter_dfs(df_list, *args):
+def filter_dfs(df_list: List[pd.DataFrame], *args) -> List[pd.DataFrame]:
     """
     selects df that have determined column names
     :param df_list: List of dfs
@@ -31,7 +33,7 @@ def filter_dfs(df_list, *args):
         return dfs_filtered
 
 
-def select_values_from_column(df, column_name, target_value):
+def select_values_from_column(df: pd.DataFrame, column_name: str, target_value: Any) -> pd.DataFrame:
     """
     Selects rows from a DataFrame where a specified column has a target value
     :param df: The pandas DataFrame to filter
@@ -50,7 +52,7 @@ def select_values_from_column(df, column_name, target_value):
         return pd.DataFrame()
 
 
-def save_df_csv(df_to_save, df_name, route=config.save_files, separator=","):
+def save_df_csv(df_to_save: pd.DataFrame, df_name: str, route: str = config.save_files, separator: str = ",") -> None:
     """
     saves the desired df in a csv
     :param df_to_save: the df we want to save

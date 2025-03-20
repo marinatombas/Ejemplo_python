@@ -1,11 +1,11 @@
-import read_prepare_save
+import pandas_utils
 import most_popular
-import config
+from config import DataReader, base_path
 import best_film
 
 # separate df titles and person
-titles_dfs = read_prepare_save.filter_dfs(config.dfs, 'title')
-credits_dfs = read_prepare_save.filter_dfs(config.dfs, 'person_id')
+# titles_dfs = pandas_utils.filter_dfs(config.dfs, 'title')
+# credits_dfs = pandas_utils.filter_dfs(config.dfs, 'person_id')
 
 
 def most_popular_actor_director():
@@ -15,15 +15,20 @@ def most_popular_actor_director():
     popular_directors
     :return:
     """
+    dr = DataReader(base_path)
+    dr.read_all_files()
+    credits_df = dr.table_dict["credits"]
+    credits_df2 = dr.table_dict["credits2"]
+    credits_dfs = [credits_df.df, credits_df2.df]
     # CALCULATE ACTOR AND DIRECTOR IN MOST FILMS
     # concat dfs
-    concat_credits = read_prepare_save.concat_df(credits_dfs)
+    concat_credits = pandas_utils.concat_df(credits_dfs)
     # clean df:
     clean_credits = most_popular.clean_credits(concat_credits)
 
     # separate actors and directors in diferent df
-    actors_df = read_prepare_save.select_values_from_column(clean_credits, 'role', 'ACTOR')
-    directors_df = read_prepare_save.select_values_from_column(clean_credits, 'role', 'DIRECTOR')
+    actors_df = pandas_utils.select_values_from_column(clean_credits, 'role', 'ACTOR')
+    directors_df = pandas_utils.select_values_from_column(clean_credits, 'role', 'DIRECTOR')
 
     # process and save
     most_popular.process_and_save(actors_df, 'actors')
@@ -32,13 +37,13 @@ def most_popular_actor_director():
 
 def award_best_film():
     # concat df
-    concat_films = read_prepare_save.concat_df(titles_dfs)
+    concat_films = pandas_utils.concat_df(titles_dfs)
 
     # clean df
     clean_films = best_film.clean_df(concat_films)
 
     # select movies
-    movies_df = read_prepare_save.select_values_from_column(clean_films, 'type', 'MOVIE')
+    movies_df = pandas_utils.select_values_from_column(clean_films, 'type', 'MOVIE')
 
     # Rank movies
     ranked_films = best_film.rank(movies_df)
@@ -47,7 +52,7 @@ def award_best_film():
     # Top 5 movies
     best_movies = ranked_films_directors.sort_values(by='score', ascending=False)
     print(f'These are the best ranked movies\n{best_movies.head(5)}')
-    read_prepare_save.save_df_csv(best_movies, "best_movies")
+    pandas_utils.save_df_csv(best_movies, "best_movies")
 
 
 def main():

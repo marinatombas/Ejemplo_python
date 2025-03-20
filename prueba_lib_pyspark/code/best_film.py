@@ -1,10 +1,11 @@
 import config
 import pandas as pd
 import numpy as np
-import read_prepare_save
+import pandas_utils
+from typing import List
 
 
-def clean_df(df_titles):
+def clean_df(df_titles: pd.DataFrame) -> pd.DataFrame:
     """
     Function that cleans df, drops duplicates
     :param df_titles: Df we want to clean, used for the titles of films dataframe
@@ -14,7 +15,7 @@ def clean_df(df_titles):
     return df_cleaned
 
 
-def calculate_score(row):
+def calculate_score(row: pd.Series) -> pd.Series:
     """
     Calculates the mean of imbd_score and tmdb_score
     :param row: row that we want to calculate the score from
@@ -30,7 +31,7 @@ def calculate_score(row):
         return (row['imdb_score'] + row['tmdb_score']) / 2
 
 
-def rank(df_titles_cleaned):
+def rank(df_titles_cleaned: pd.DataFrame) -> pd.DataFrame:
     """
     Creates a df with the mean score of each movie
     :param df_titles_cleaned: df already cleaned we want to calculate scores of
@@ -42,7 +43,7 @@ def rank(df_titles_cleaned):
     return df_ranked
 
 
-def select_directors(dataframes):
+def select_directors(dataframes: List[pd.DataFrame]) -> pd.DataFrame:
     """
     Function used to select directors from a list of df
     :param dataframes:list of all the dataframes
@@ -54,7 +55,7 @@ def select_directors(dataframes):
     return directors_df
 
 
-def join(df_ranked):
+def join(df_ranked: pd.DataFrame) -> pd.DataFrame:
     """
     Takes the name of the directors from other df
     and joins the ranked df with the names of directors
