@@ -19,7 +19,7 @@ with open(os.path.join(here, 'README.md')) as f:
 
 setup(
     name='prueba_lib_pyspark',
-    version='1.0.0',
+    version='1.0.1',
     description='Library Python project',
     install_requires=requirements,
     tests_require=test_requirements,

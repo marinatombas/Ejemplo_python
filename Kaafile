@@ -1,6 +1,6 @@
 [project]
 type = "MODULE"
-version = "1.0.0"
+version = "1.0.1"
 name = "prueba_lib_pyspark"
 
 [[source]]
