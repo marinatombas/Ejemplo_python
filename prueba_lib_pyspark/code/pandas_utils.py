@@ -52,7 +52,7 @@ def select_values_from_column(df: pd.DataFrame, column_name: str, target_value: 
         return pd.DataFrame()
 
 
-def save_df_csv(df_to_save: pd.DataFrame, df_name: str, route: str = config.save_files, separator: str = ",") -> None:
+def save_df_csv(df_to_save: pd.DataFrame, df_name: str, route: str = config.SAVE_FILES, separator: str = ",") -> None:
     """
     saves the desired df in a csv
     :param df_to_save: the df we want to save

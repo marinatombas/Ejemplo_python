@@ -4,8 +4,8 @@ from typing import Dict
 import pandas as pd
 from dataclasses import dataclass
 
-base_path = "..\\files\\*.csv"
-save_files="..\\saved_files"
+BASE_PATH = "..\\files\\*.csv"
+SAVE_FILES = "..\\saved_files"
 
 @dataclass
 class Table:
