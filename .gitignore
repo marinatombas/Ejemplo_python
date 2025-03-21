@@ -108,3 +108,5 @@ ENV/
 .idea
 
 .omen
+
+prueba_lib_pyspark/saved_files
