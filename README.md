@@ -6,7 +6,6 @@ This Python project analyzes movie data from multiple CSV files containing infor
 
 1. **Extraction of Actors and Directors**:
    - Identifies the actors who appear in the most movies.
-     - Identifies the directors who have directed the most movies.
    - Displays the top 5 most active actors and directors.
 
 2. **Calculation of Top-Rated Movies**:
